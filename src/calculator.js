@@ -3,11 +3,16 @@
 /**
  * Node.js CLI Calculator
  * 
- * Supported Operations:
+ * Supported Basic Operations:
  * - Addition (+): Add two or more numbers
  * - Subtraction (-): Subtract numbers from an initial value
  * - Multiplication (*): Multiply two or more numbers
  * - Division (/): Divide numbers with error handling for division by zero
+ * 
+ * Supported Advanced Operations:
+ * - Modulo (%): Return the remainder of a divided by b
+ * - Power (^): Raise a number to an exponent
+ * - Square Root (√): Calculate the square root of a number
  */
 
 class Calculator {
@@ -67,6 +72,52 @@ class Calculator {
   }
 
   /**
+   * Modulo: Return the remainder of a divided by b
+   * @param {number} a - The dividend
+   * @param {number} b - The divisor
+   * @returns {number} The remainder of a divided by b
+   * @throws {Error} If b is zero
+   */
+  modulo(a, b) {
+    if (typeof a !== 'number' || typeof b !== 'number') {
+      throw new Error('Modulo requires two numbers');
+    }
+    if (b === 0) {
+      throw new Error('Modulo by zero is not allowed');
+    }
+    return a % b;
+  }
+
+  /**
+   * Power: Return base raised to the exponent
+   * @param {number} base - The base number
+   * @param {number} exponent - The exponent
+   * @returns {number} The result of base raised to the exponent
+   */
+  power(base, exponent) {
+    if (typeof base !== 'number' || typeof exponent !== 'number') {
+      throw new Error('Power requires two numbers');
+    }
+    return Math.pow(base, exponent);
+  }
+
+  /**
+   * Square Root: Return the square root of n
+   * @param {number} n - The number to find the square root of
+   * @returns {number} The square root of n
+   * @throws {Error} If n is negative
+   */
+  squareRoot(n) {
+    if (typeof n !== 'number') {
+      throw new Error('Square root requires a number');
+    }
+    if (n < 0) {
+      throw new Error('Square root of negative numbers is not allowed');
+    }
+    return Math.sqrt(n);
+  }
+
+  /**
    * Clear: Reset the calculator (utility method)
    * @returns {number} Returns 0
    */
@@ -114,6 +165,28 @@ function main() {
       case '/':
         result = calculator.divide(...numbers);
         break;
+      case 'modulo':
+      case '%':
+        if (numbers.length !== 2) {
+          throw new Error('Modulo requires exactly two numbers');
+        }
+        result = calculator.modulo(numbers[0], numbers[1]);
+        break;
+      case 'power':
+      case '^':
+        if (numbers.length !== 2) {
+          throw new Error('Power requires exactly two numbers');
+        }
+        result = calculator.power(numbers[0], numbers[1]);
+        break;
+      case 'sqrt':
+      case 'squareroot':
+      case '√':
+        if (numbers.length !== 1) {
+          throw new Error('Square root requires exactly one number');
+        }
+        result = calculator.squareRoot(numbers[0]);
+        break;
       case 'help':
       case '-h':
       case '--help':
@@ -139,20 +212,33 @@ Calculator - Node.js CLI Calculator App
 
 Usage: calculator <operation> <numbers...>
 
-Supported Operations:
+Basic Operations:
   add, +          Addition: sum all numbers
   subtract, -     Subtraction: subtract all numbers from the first
   multiply, *     Multiplication: multiply all numbers
   divide, /       Division: divide sequentially (with zero-check)
+
+Advanced Operations:
+  modulo, %       Modulo: remainder of first number divided by second
+  power, ^        Power: raise first number to the power of second
+  sqrt, squareroot, √   Square root: calculate square root of number
+
+Other:
   help, -h        Display this help message
 
-Examples:
+Examples - Basic Operations:
   calculator add 5 3 2           # Result: 10
   calculator subtract 10 3 2     # Result: 5
   calculator multiply 4 5        # Result: 20
   calculator divide 100 2 5      # Result: 10
   calculator + 1.5 2.5           # Result: 4
-  calculator * 3 4 5             # Result: 60
+
+Examples - Advanced Operations:
+  calculator modulo 10 3         # Result: 1
+  calculator power 2 3           # Result: 8
+  calculator ^ 5 2               # Result: 25
+  calculator sqrt 16             # Result: 4
+  calculator squareroot 9        # Result: 3
   `);
 }
 

@@ -222,4 +222,172 @@ describe('Calculator', () => {
       expect(calculator.divide(42)).toBe(42);
     });
   });
+
+  describe('Modulo', () => {
+    test('should return remainder: 5 % 2 = 1', () => {
+      expect(calculator.modulo(5, 2)).toBe(1);
+    });
+
+    test('should handle modulo: 10 % 3 = 1', () => {
+      expect(calculator.modulo(10, 3)).toBe(1);
+    });
+
+    test('should return 0 when dividend is divisible: 10 % 5 = 0', () => {
+      expect(calculator.modulo(10, 5)).toBe(0);
+    });
+
+    test('should handle negative dividend: -10 % 3 = -1', () => {
+      expect(calculator.modulo(-10, 3)).toBe(-1);
+    });
+
+    test('should handle negative divisor: 10 % (-3) = 1', () => {
+      expect(calculator.modulo(10, -3)).toBe(1);
+    });
+
+    test('should handle both negative: -10 % (-3) = -1', () => {
+      expect(calculator.modulo(-10, -3)).toBe(-1);
+    });
+
+    test('should handle decimal numbers: 7.5 % 2 = 1.5', () => {
+      expect(calculator.modulo(7.5, 2)).toBeCloseTo(1.5, 5);
+    });
+
+    test('should throw error when dividing by zero', () => {
+      expect(() => calculator.modulo(10, 0)).toThrow('Modulo by zero is not allowed');
+    });
+
+    test('should throw error when modulo is not a number', () => {
+      expect(() => calculator.modulo('10', 3)).toThrow('Modulo requires two numbers');
+    });
+  });
+
+  describe('Power', () => {
+    test('should raise to power: 2 ^ 3 = 8', () => {
+      expect(calculator.power(2, 3)).toBe(8);
+    });
+
+    test('should handle zero exponent: 5 ^ 0 = 1', () => {
+      expect(calculator.power(5, 0)).toBe(1);
+    });
+
+    test('should handle exponent of 1: 5 ^ 1 = 5', () => {
+      expect(calculator.power(5, 1)).toBe(5);
+    });
+
+    test('should handle negative exponent: 2 ^ (-2) = 0.25', () => {
+      expect(calculator.power(2, -2)).toBe(0.25);
+    });
+
+    test('should handle negative base: (-2) ^ 3 = -8', () => {
+      expect(calculator.power(-2, 3)).toBe(-8);
+    });
+
+    test('should handle negative base with even exponent: (-2) ^ 4 = 16', () => {
+      expect(calculator.power(-2, 4)).toBe(16);
+    });
+
+    test('should handle decimal base: 1.5 ^ 2 = 2.25', () => {
+      expect(calculator.power(1.5, 2)).toBe(2.25);
+    });
+
+    test('should handle decimal exponent: 4 ^ 0.5 = 2', () => {
+      expect(calculator.power(4, 0.5)).toBe(2);
+    });
+
+    test('should handle large numbers: 10 ^ 6 = 1000000', () => {
+      expect(calculator.power(10, 6)).toBe(1000000);
+    });
+
+    test('should throw error when power argument is not a number', () => {
+      expect(() => calculator.power('2', 3)).toThrow('Power requires two numbers');
+    });
+  });
+
+  describe('Square Root', () => {
+    test('should calculate square root: √16 = 4', () => {
+      expect(calculator.squareRoot(16)).toBe(4);
+    });
+
+    test('should calculate square root: √9 = 3', () => {
+      expect(calculator.squareRoot(9)).toBe(3);
+    });
+
+    test('should handle square root of zero: √0 = 0', () => {
+      expect(calculator.squareRoot(0)).toBe(0);
+    });
+
+    test('should handle square root of one: √1 = 1', () => {
+      expect(calculator.squareRoot(1)).toBe(1);
+    });
+
+    test('should handle decimal square root: √2 ≈ 1.414', () => {
+      expect(calculator.squareRoot(2)).toBeCloseTo(1.414, 2);
+    });
+
+    test('should handle perfect square: √144 = 12', () => {
+      expect(calculator.squareRoot(144)).toBe(12);
+    });
+
+    test('should handle decimal input: √2.25 = 1.5', () => {
+      expect(calculator.squareRoot(2.25)).toBe(1.5);
+    });
+
+    test('should handle large numbers: √1000000 = 1000', () => {
+      expect(calculator.squareRoot(1000000)).toBe(1000);
+    });
+
+    test('should throw error for negative numbers', () => {
+      expect(() => calculator.squareRoot(-16)).toThrow('Square root of negative numbers is not allowed');
+    });
+
+    test('should throw error for very small negative numbers', () => {
+      expect(() => calculator.squareRoot(-0.01)).toThrow('Square root of negative numbers is not allowed');
+    });
+
+    test('should throw error when argument is not a number', () => {
+      expect(() => calculator.squareRoot('16')).toThrow('Square root requires a number');
+    });
+  });
+
+  describe('Integration Tests - Extended Operations (Image Examples)', () => {
+    test('Image example 1: modulo with 5 % 2 = 1', () => {
+      expect(calculator.modulo(5, 2)).toBe(1);
+    });
+
+    test('Image example 2: power with 2 ^ 3 = 8', () => {
+      expect(calculator.power(2, 3)).toBe(8);
+    });
+
+    test('Image example 3: square root with √16 = 4', () => {
+      expect(calculator.squareRoot(16)).toBe(4);
+    });
+  });
+
+  describe('Combined Operations Tests', () => {
+    test('should combine modulo and power: (2 ^ 3) % 5 = 3', () => {
+      const power = calculator.power(2, 3);
+      const result = calculator.modulo(power, 5);
+      expect(result).toBe(3);
+    });
+
+    test('should combine square root and power: (√16) ^ 2 = 16', () => {
+      const sqrt = calculator.squareRoot(16);
+      const result = calculator.power(sqrt, 2);
+      expect(result).toBe(16);
+    });
+
+    test('should combine modulo and square root: √(16 % 10) ≈ 2.449', () => {
+      const mod = calculator.modulo(16, 10);
+      const result = calculator.squareRoot(mod);
+      expect(result).toBeCloseTo(2.449, 2);
+    });
+
+    test('should chain multiple advanced operations', () => {
+      const power = calculator.power(3, 2);
+      const sqrt = calculator.squareRoot(power);
+      const mod = calculator.modulo(sqrt, 2);
+      expect(mod).toBeCloseTo(1, 5);
+    });
+  });
 });
+
